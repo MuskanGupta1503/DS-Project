@@ -1,22 +1,23 @@
 #include<bits/stdc++.h>
 using namespace std;
+
 class Medicine
 {
 private:
     int ID,qty;
     string name,cmpname,supname;
     float unitCost,saleCost;
-public:
 
+public:
    void getdata()
    {
      cout<<"Enter Medicine ID \n";
      cin>>ID;
      cout<<"Enter Medicine name \n";
      cin>>name;
-     cout<<"Enter Company marks \n";
+     cout<<"Enter Company name \n";
      cin>>cmpname;
-     cout<<"Enter Supplier marks \n";
+     cout<<"Enter Supplier name \n";
      cin>>supname;
      cout<<"Enter Qty \n";
      cin>>qty;
@@ -25,6 +26,7 @@ public:
      cout<<"Enter Sale Cost \n";
      cin>>saleCost;
    }
+
    void display()
    {
         cout<<endl<<"Medicine ID: "<<ID;
@@ -36,18 +38,32 @@ public:
         cout<<endl<<"Quantity: "<<qty;
         cout<<endl;
    }
+
    string retname()
    {
        return name;
    }
+
+   string retCompname()
+   {
+       return cmpname;
+   }
+
+   string retSupname()
+   {
+       return supname;
+   }
+
    int retID()
    {
        return ID;
    }
+
 };
 char rep;
 Medicine s,s1;
 fstream fs,temp;
+
 void create()
 {
     fs.open("med.txt",ios::out| ios::binary);
@@ -69,6 +85,7 @@ void dispfile()
     }
     fs.close();
 }
+
 void append()
 {
       fs.open("med.txt",ios::app|ios::binary);
@@ -80,6 +97,7 @@ void append()
       }while(rep=='y' || rep=='Y');
       fs.close();
 }
+
 void search()
 {
     int choice;
@@ -91,14 +109,24 @@ void search()
     {
     }
 }
+
 void editrec()
 {
 
 }
+
 void count_rec()
 {
-
+    fs.open("med.txt",ios::in|ios::binary);
+    int num=0;
+    while(fs.read((char*)&s,sizeof(s)))
+    {
+        num++;
+    }
+    cout<<"Records in the file are-- "<<num;
+    fs.close();
 }
+
 int main()
 {
     int ch;
@@ -108,6 +136,7 @@ int main()
         cout<<"1.Create a file"<<endl;
         cout<<"2.Read a file"<<endl;
         cout<<"3.Append a file"<<endl;
+        cout<<"4.Count total records in a file"<<endl;
         cin>>ch;
         switch(ch)
         {
@@ -116,6 +145,8 @@ int main()
             case 2:dispfile();
             break;
             case 3:append();
+            break;
+            case 4:count_rec();
             break;
         }
         cout<<endl<<"Want to continue(y/n)--";
