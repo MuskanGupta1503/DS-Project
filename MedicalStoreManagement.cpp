@@ -66,7 +66,7 @@ fstream fs,temp;
 
 void create()
 {
-    fs.open("med.txt",ios::out| ios::binary);
+    fs.open("med.txt",ios::out| ios::binary | ios::app);
     do{
         s.getdata();
         fs.write((char*)&s,sizeof(s));
@@ -91,22 +91,75 @@ void append()
       fs.open("med.txt",ios::app|ios::binary);
       do{
         s.getdata();
-        fs.write((char*)&s,sizeof(s));                                                     // object's' is written into the file
+        fs.write((char*)&s,sizeof(s));                              // object's' is written into the file
         cout<<"Do you want to enter another record (y/n)";
         cin>>rep;
       }while(rep=='y' || rep=='Y');
       fs.close();
 }
 
-void search()
+void search_rec()
 {
     int choice;
-    fs.open("med.txt",ios::app|ios::binary);
-    cout<<"Search on the basis of: "<<endl<<"1.roll no"<<endl<<"2.Name"<<endl;
-    cout<<"Enter Choice__";
+    fs.open("med.txt",ios::in|ios::binary);
+    cout<<"Search on the basis of: "<<endl<<"1.ID"<<endl<<"2.Name"<<endl<<"3.Company Name"<<endl<<"4.Supplier Name"<<endl;
+    cout<<"Enter Choice__"<<endl;
     cin>>choice;
     if(choice==1)
     {
+        int id;
+        cout<<"Enter ID to be searched---"<<endl;
+        cin>>id;
+        while(fs.read((char*)&s,sizeof(s)))
+        {
+            if(s.retID()==id)
+            {
+                s.display();
+                break;
+            }
+        }
+    }
+        if(choice==2)
+    {
+        string nm;
+        cout<<"Enter name to be searched---"<<endl;
+        cin>>nm;
+        while(fs.read((char*)&s,sizeof(s)))
+        {
+            if(s.retname()==nm)
+            {
+                s.display();
+                break;
+            }
+        }
+    }
+        if(choice==3)
+    {
+        string cmp;
+        cout<<"Enter Company name to be searched---"<<endl;
+        cin>>cmp;
+        while(fs.read((char*)&s,sizeof(s)))
+        {
+            if(s.retCompname()==cmp)
+            {
+                s.display();
+//                break;
+            }
+        }
+    }
+        if(choice==4)
+    {
+        string smp;
+        cout<<"Enter Supplier name to be searched---"<<endl;
+        cin>>smp;
+        while(fs.read((char*)&s,sizeof(s)))
+        {
+            if(s.retSupname()==smp)
+            {
+                s.display();
+//                break;
+            }
+        }
     }
 }
 
@@ -137,6 +190,8 @@ int main()
         cout<<"2.Read a file"<<endl;
         cout<<"3.Append a file"<<endl;
         cout<<"4.Count total records in a file"<<endl;
+        cout<<"5.Search and display a record"<<endl;
+        cout<<"6.Edit a record"<<endl;
         cin>>ch;
         switch(ch)
         {
@@ -147,6 +202,8 @@ int main()
             case 3:append();
             break;
             case 4:count_rec();
+            break;
+            case 5:search_rec();
             break;
         }
         cout<<endl<<"Want to continue(y/n)--";
