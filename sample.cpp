@@ -325,6 +325,39 @@ void MODIFY()
     f.close();
 }
 
+void DELETION()
+{
+    ifstream fmain("med1.dat", ios::binary | ios::in);
+    ofstream ftemp("temp.dat", ios::binary | ios::out);
+    Medicine m;
+    int id1;
+    cout<<"Enter ID whose record is to be deleted:";
+    cin>>id1;
+    char found='N';
+    while(fmain.read((char*)&m,sizeof(m)))
+    {
+        if(m.retID()!=id1)
+        {
+            ftemp.write((char*)&m,sizeof(m));
+        }
+        else
+        {
+            found='Y';
+        }
+    }
+    if(found=='N')
+    {
+        cout<<"\n RECORD NOT FOUND!!";
+    }
+    else
+    {
+        cout<<"\n RECORD DELETED";
+    }
+    fmain.close();
+    ftemp.close();
+    remove("med1.dat");
+    rename("temp.dat","med1.dat");
+}
 int main()
 {
     char ch1;
@@ -336,6 +369,7 @@ int main()
         cout<<"\n 3.Count total records in a file";
         cout<<"\n 4.Search some Record";
         cout<<"\n 5.Modify a record";
+        cout<<"\n 6.Delete a record on the basis of ID";
         cin>>ch;
         switch(ch)
         {
@@ -353,6 +387,9 @@ int main()
             break;
         case 5:
             MODIFY();
+            break;
+        case 6:
+            DELETION();
             break;
         }
         cout<<endl<<"Want to continue(y/n)--";
