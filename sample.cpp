@@ -12,6 +12,7 @@ class Medicine
     int ID,qty;
     char name[30],cmpname[30],supname[30];
     float unitCost,saleCost;
+
 public:
     Medicine()
     {
@@ -23,6 +24,7 @@ public:
         unitCost=0;
         saleCost=0;
     }
+
     Medicine(Medicine &M)
     {
         ID=M.ID;
@@ -33,12 +35,14 @@ public:
         unitCost=M.unitCost;
         saleCost=M.saleCost;
     }
+
     void indata();
     void outdata();
     int retID();
     char*retName();
     char*retCmpname();
     char*retSupname();
+
 };
 
 void Medicine::indata()
@@ -108,6 +112,7 @@ void WRITE()
     }while(toupper(reply)=='Y');
     f.close();
 }
+
 void READ()
 {
     ifstream f("med1.dat",ios::binary | ios::in);
@@ -266,6 +271,7 @@ void COUNT_REC()
     cout<<"Records in the file are-- "<<num;
     fs.close();
 }
+
 void SEARCH()
 {
     int s;
@@ -325,7 +331,7 @@ void MODIFY()
     f.close();
 }
 
-void DELETION()
+void DELETION1()
 {
     ifstream fmain("med1.dat", ios::binary | ios::in);
     ofstream ftemp("temp.dat", ios::binary | ios::out);
@@ -358,10 +364,126 @@ void DELETION()
     remove("med1.dat");
     rename("temp.dat","med1.dat");
 }
+
+void DELETION2()
+{
+    ifstream fmain("med1.dat", ios::binary | ios::in);
+    ofstream ftemp("temp.dat", ios::binary | ios::out);
+    Medicine m;
+   // int id1;
+    //cout<<"Enter ID whose record is to be deleted:";
+    //cin>>id1;
+    char nm[30];
+    cin.ignore(numeric_limits<streamsize>::max(),'\n');
+    cout<<"Enter Name whose record is to be deleted: ";
+    gets(nm);
+    char found='N';
+    while(fmain.read((char*)&m,sizeof(m)))
+    {
+        if(strcmp(m.retName(),nm)!=0)
+        {
+            ftemp.write((char*)&m,sizeof(m));
+        }
+        else
+        {
+            found='Y';
+        }
+    }
+    if(found=='N')
+    {
+        cout<<"\n RECORD NOT FOUND!!";
+    }
+    else
+    {
+        cout<<"\n RECORD DELETED";
+    }
+    fmain.close();
+    ftemp.close();
+    remove("med1.dat");
+    rename("temp.dat","med1.dat");
+}
+
+void DELETION3()
+{
+    ifstream fmain("med1.dat", ios::binary | ios::in);
+    ofstream ftemp("temp.dat", ios::binary | ios::out);
+    Medicine m;
+   // int id1;
+    //cout<<"Enter ID whose record is to be deleted:";
+    //cin>>id1;
+    char nm[30];
+    cin.ignore(numeric_limits<streamsize>::max(),'\n');
+    cout<<"Enter Name whose record is to be deleted: ";
+    gets(nm);
+    char found='N';
+    while(fmain.read((char*)&m,sizeof(m)))
+    {
+        if(strcmp(m.retCmpname(),nm)!=0)
+        {
+            ftemp.write((char*)&m,sizeof(m));
+        }
+        else
+        {
+            found='Y';
+        }
+    }
+    if(found=='N')
+    {
+        cout<<"\n RECORD NOT FOUND!!";
+    }
+    else
+    {
+        cout<<"\n RECORD DELETED";
+    }
+    fmain.close();
+    ftemp.close();
+    remove("med1.dat");
+    rename("temp.dat","med1.dat");
+}
+
+void DELETION4()
+{
+    ifstream fmain("med1.dat", ios::binary | ios::in);
+    ofstream ftemp("temp.dat", ios::binary | ios::out);
+    Medicine m;
+   // int id1;
+    //cout<<"Enter ID whose record is to be deleted:";
+    //cin>>id1;
+    char nm[30];
+    cin.ignore(numeric_limits<streamsize>::max(),'\n');
+    cout<<"Enter Name whose record is to be deleted: ";
+    gets(nm);
+    char found='N';
+    while(fmain.read((char*)&m,sizeof(m)))
+    {
+        if(strcmp(m.retSupname(),nm)!=0)
+        {
+            ftemp.write((char*)&m,sizeof(m));
+        }
+        else
+        {
+            found='Y';
+        }
+    }
+    if(found=='N')
+    {
+        cout<<"\n RECORD NOT FOUND!!";
+    }
+    else
+    {
+        cout<<"\n RECORD DELETED";
+    }
+    fmain.close();
+    ftemp.close();
+    remove("med1.dat");
+    rename("temp.dat","med1.dat");
+}
+
 int main()
 {
     char ch1;
     int ch;
+
     do{
         cout<<"\n WELCOME TO MEDICAL STORE";
         cout<<"\n 1.Create a file";
@@ -370,7 +492,11 @@ int main()
         cout<<"\n 4.Search some Record";
         cout<<"\n 5.Modify a record";
         cout<<"\n 6.Delete a record on the basis of ID";
+        cout<<"\n 7.Delete a record on the basis of name";
+        cout<<"\n 8.Delete a record on the basis of company name";
+        cout<<"\n 9.Delete a record on the basis of supplier name";
         cin>>ch;
+
         switch(ch)
         {
         case 1:
@@ -389,7 +515,16 @@ int main()
             MODIFY();
             break;
         case 6:
-            DELETION();
+            DELETION1();
+            break;
+        case 7:
+            DELETION2();
+            break;
+        case 8:
+            DELETION3();
+            break;
+        case 9:
+            DELETION4();
             break;
         }
         cout<<endl<<"Want to continue(y/n)--";
