@@ -5,6 +5,7 @@
 #include<string>
 #include<string.h>
 #include<ctype.h>
+#include<math.h>
 using namespace std;
 
 class Medicine
@@ -479,6 +480,32 @@ void DELETION4()
     rename("temp.dat","med1.dat");
 }
 
+void DELETION()
+{
+    int s;
+    cout<<"\n Delete on the basis of :- ";
+    cout<<"\n 1.ID";
+    cout<<"\n 2.Name";
+    cout<<"\n 3.Company Name";
+    cout<<"\n 4.Supplier Name";
+    cin>>s;
+    switch(s)
+    {
+    case 1:
+        DELETION1();
+        break;
+    case 2:
+        DELETION2();
+        break;
+    case 3:
+        DELETION3();
+        break;
+    case 4:
+        DELETION4();
+        break;
+    }
+}
+
 int main()
 {
     char ch1;
@@ -491,10 +518,7 @@ int main()
         cout<<"\n 3.Count total records in a file";
         cout<<"\n 4.Search some Record";
         cout<<"\n 5.Modify a record";
-        cout<<"\n 6.Delete a record on the basis of ID";
-        cout<<"\n 7.Delete a record on the basis of name";
-        cout<<"\n 8.Delete a record on the basis of company name";
-        cout<<"\n 9.Delete a record on the basis of supplier name";
+        cout<<"\n 6.Delete a record ";
         cin>>ch;
 
         switch(ch)
@@ -515,17 +539,9 @@ int main()
             MODIFY();
             break;
         case 6:
-            DELETION1();
+            DELETION();
             break;
-        case 7:
-            DELETION2();
-            break;
-        case 8:
-            DELETION3();
-            break;
-        case 9:
-            DELETION4();
-            break;
+
         }
         cout<<endl<<"Want to continue(y/n)--";
         cin>>ch1;
