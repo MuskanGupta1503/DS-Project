@@ -111,6 +111,22 @@ void append()
 
 void search_rec()
 {
+     fs.open("med.txt",ios::in| ios::binary | ios::out| ios::app );
+//    fs.seekg(0,ios::beg);
+    if(!fs)
+    {
+        cout<<"FILE does not exists"<<endl;
+        return;
+    }
+    while(fs.read((char*)&s,sizeof(s)))
+    {
+        s.display();
+    }
+    fs.close();
+}
+
+void search_rec1()
+{
     int choice;
     fs.open("med.txt",ios::in|ios::binary| ios::out | ios::app);
     fs.seekg(0,ios::beg);
