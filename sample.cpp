@@ -291,6 +291,40 @@ void SEARCH()
         break;
     }
 }
+
+void MODIFY()
+{
+    fstream f("med1.dat", ios::in | ios::out | ios::binary);
+    Medicine m;
+    int id1;
+    cout<<"\n Enter ID whose record is to be modified: ";
+    cin>>id1;
+    int rec_count=0;
+    char found='N';
+    while(f.read((char*)&m,sizeof(m)))
+    {
+        if(m.retID()==id1)
+        {
+            cout<<"\n Enter New Information";
+            m.indata();
+            f.seekg(rec_count*sizeof(Medicine),ios::beg);
+            f.write((char*)&m,sizeof(Medicine));
+            found='Y';
+            break;
+        }
+        rec_count++;
+    }
+    if(found=='Y')
+    {
+        cout<<"\n Medicine Details Updated";
+    }
+    else
+    {
+        cout<<"\n Record Not Found!!!!";
+    }
+    f.close();
+}
+
 int main()
 {
     char ch1;
@@ -301,10 +335,7 @@ int main()
         cout<<"\n 2.Read a file";
         cout<<"\n 3.Count total records in a file";
         cout<<"\n 4.Search some Record";
-        cout<<"\n 5.Search on the basis of ID";
-        cout<<"\n 6.Search on the basis of Name";
-        cout<<"\n 7.Search on the basis of Company Name";
-        cout<<"\n 8.Search on the basis of Supplier Name";
+        cout<<"\n 5.Modify a record";
         cin>>ch;
         switch(ch)
         {
@@ -321,16 +352,7 @@ int main()
             SEARCH();
             break;
         case 5:
-            SEARCH_ID();
-            break;
-        case 6:
-            SEARCH_NAME();
-            break;
-        case 7:
-            SEARCH_CMPNAME();
-            break;
-        case 8:
-            SEARCH_SUPNAME();
+            MODIFY();
             break;
         }
         cout<<endl<<"Want to continue(y/n)--";
