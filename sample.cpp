@@ -118,12 +118,14 @@ void READ()
 {
     ifstream f("med1.dat",ios::binary | ios::in);
     Medicine m;
+
     if(!f)
     {
         cout<<endl<<"FILE DOESN'T EXIST!!!!!";
         return;
     }
     int ctr=0;
+
     while(f.read((char*)&m,sizeof(m)))
     {
         cout<<endl<<"Record: "<<++ctr;
@@ -506,6 +508,50 @@ void DELETION()
     }
 }
 
+void SORT_BY_ID()
+{
+    fstream f;
+    f.open("med1.dat",ios::binary | ios::in);
+    Medicine M[1000];
+
+    if(!f)
+    {
+        cout<<"FILE DOESN'T EXISTS!!!!! ";
+        return;
+    }
+
+    int n=0;
+    while(f.read((char*)&M[n],sizeof(Medicine)))
+        n++;
+
+    Medicine temp;
+
+    int i,j;
+    for(int i=1;i<n;i++)
+    {
+        for(int j=0;j<n-i;j++)
+        {
+            if(M[j].retID()>M[j+1].retID())
+            {
+                temp=M[j];
+                M[j]=M[j+1];
+                M[j+1]=temp;
+            }
+        }
+    }
+
+    f.close();
+    f.open("med1.dat",ios::binary | ios::out);
+    i=0;
+    while(i<n)
+    {
+        f.write((char*)&M[i],sizeof(Medicine));
+        ++i;
+    }
+    cout<<"\n FILE SORTED";
+    f.close();
+}
+
 int main()
 {
     char ch1;
@@ -519,6 +565,7 @@ int main()
         cout<<"\n 4.Search some Record";
         cout<<"\n 5.Modify a record";
         cout<<"\n 6.Delete a record ";
+        cout<<"\n 7.Sort On the basis of ID";
         cin>>ch;
 
         switch(ch)
@@ -540,6 +587,9 @@ int main()
             break;
         case 6:
             DELETION();
+            break;
+        case 7:
+            SORT_BY_ID();
             break;
 
         }
