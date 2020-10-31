@@ -809,11 +809,6 @@ void SORT()
 
 void ADMIN()
 {
-
-}
-
-int main()
-{
     char ch1;
     int ch;
 
@@ -853,7 +848,40 @@ int main()
             break;
 
         }
-        cout<<endl<<"Want to continue(y/n)--";
+        cout<<endl<<"Want to continue as ADMIN(y/n)--";
+        cin>>ch1;
+    }while(ch1=='y' || ch1=='Y');
+
+}
+
+void CUSTOMER()
+{
+    cout<<"Hello"<<endl;
+}
+
+int main()
+{
+    char ch1;
+    int ch;
+
+    do{
+        cout<<"\n WELCOME TO MEDICAL STORE";
+        cout<<"\n ENTER AS";
+        cout<<"\n 1.ADMIN";
+        cout<<"\n 2.CUSTOMER";
+        cin>>ch;
+
+        switch(ch)
+        {
+        case 1:
+            ADMIN();
+            break;
+        case 2:
+            CUSTOMER();
+            break;
+
+        }
+        cout<<endl<<"Want to continue in Medical Store(y/n)--";
         cin>>ch1;
     }while(ch1=='y' || ch1=='Y');
     return 0;
