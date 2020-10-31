@@ -43,6 +43,7 @@ public:
 
     void indata();
     void outdata();
+    void OutDataForCustomer();
     int retID();
     char*retName();
     char*retCmpname();
@@ -80,6 +81,14 @@ void Medicine::outdata()
         cout<<endl<<"Unit cost: "<<unitCost;
         cout<<endl<<"Sale Cost: "<<saleCost;
         cout<<endl<<"Quantity: "<<qty;
+        cout<<endl;
+}
+
+void Medicine::OutDataForCustomer()
+{
+        cout<<"Name: "<<name;
+        cout<<endl<<"  Sale Cost: "<<saleCost;
+        cout<<endl<<"  Quantity: "<<qty;
         cout<<endl;
 }
 
@@ -854,11 +863,6 @@ void ADMIN()
 
 }
 
-void CUSTOMER()
-{
-    cout<<"Hello"<<endl;
-}
-
 bool LOGIN()
 {
     char username[30];
@@ -875,6 +879,50 @@ bool LOGIN()
     }
 
     return false;
+}
+
+void DISPLAY()
+{
+    ifstream f("med1.dat",ios::binary | ios::in);
+    Medicine m;
+
+    if(!f)
+    {
+        cout<<endl<<"FILE DOESN'T EXIST!!!!!";
+        return;
+    }
+    int ctr=0;
+
+    while(f.read((char*)&m,sizeof(m)))
+    {
+        cout<<endl<<++ctr<<")";
+        m.OutDataForCustomer();
+    }
+    f.close();
+}
+
+
+void CUSTOMER()
+{
+    //cout<<"Hello"<<endl;
+    char ch1;
+    int ch;
+
+    do{
+        cout<<"\n WELCOME TO MEDICAL STORE";
+        cout<<"\n 1.Explore All Available Medicines";
+        cout<<"\n 2.CUSTOMER \n";
+        cin>>ch;
+
+        switch(ch)
+        {
+        case 1:
+            DISPLAY();
+            break;
+        }
+        cout<<endl<<"Want to continue as Customer(y/n)--";
+        cin>>ch1;
+    }while(ch1=='y' || ch1=='Y');
 }
 
 int main()
