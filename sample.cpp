@@ -10,9 +10,13 @@ using namespace std;
 
 class Medicine
 {
-    int ID,qty;
-    char name[30],cmpname[30],supname[30];
-    float unitCost,saleCost;
+    int ID;
+    int qty;
+    char name[30];
+    char cmpname[30];
+    char supname[30];
+    float unitCost;
+    float saleCost;
 
 public:
     Medicine()
@@ -69,7 +73,7 @@ void Medicine::indata()
 
 void Medicine::outdata()
 {
-    cout<<endl<<"Medicine ID: "<<ID;
+        cout<<endl<<"Medicine ID: "<<ID;
         cout<<endl<<"Name: "<<name;
         cout<<endl<<"Company name: "<<cmpname;
         cout<<endl<<"Supplier name: "<<supname;
@@ -491,6 +495,7 @@ void DELETION()
     cout<<"\n 3.Company Name";
     cout<<"\n 4.Supplier Name";
     cin>>s;
+
     switch(s)
     {
     case 1:
@@ -525,24 +530,47 @@ void SORT_BY_ID()
         n++;
 
     Medicine temp;
+    int choice;
+    cout<<"Sort"<<endl;
+    cout<<"1. Ascending"<<endl;
+    cout<<"2. Descending"<<endl;
+    cin>>choice;
 
-    int i,j;
-    for(int i=1;i<n;i++)
+    if(choice==1)
     {
-        for(int j=0;j<n-i;j++)
+        for(int i=1;i<n;i++)
         {
-            if(M[j].retID()>M[j+1].retID())
+            for(int j=0;j<n-i;j++)
             {
-                temp=M[j];
-                M[j]=M[j+1];
-                M[j+1]=temp;
+                if(M[j].retID()>M[j+1].retID())
+                {
+                    temp=M[j];
+                    M[j]=M[j+1];
+                    M[j+1]=temp;
+                }
             }
         }
+    }
+    else
+    {
+        for(int i=1;i<n;i++)
+        {
+            for(int j=0;j<n-i;j++)
+            {
+                if(M[j].retID()<M[j+1].retID())
+                {
+                    temp=M[j];
+                    M[j]=M[j+1];
+                    M[j+1]=temp;
+                }
+            }
+        }
+
     }
 
     f.close();
     f.open("med1.dat",ios::binary | ios::out);
-    i=0;
+    int i=0;
     while(i<n)
     {
         f.write((char*)&M[i],sizeof(Medicine));
@@ -550,6 +578,238 @@ void SORT_BY_ID()
     }
     cout<<"\n FILE SORTED";
     f.close();
+}
+
+void SORT_BY_NAME()
+{
+    fstream f;
+    f.open("med1.dat",ios::binary | ios::in);
+    Medicine M[1000];
+
+    if(!f)
+    {
+        cout<<"FILE DOESN'T EXISTS!!!!! ";
+        return;
+    }
+
+    int n=0;
+    while(f.read((char*)&M[n],sizeof(Medicine)))
+        n++;
+
+    Medicine temp;
+    int choice;
+    cout<<"Sort"<<endl;
+    cout<<"1. Ascending"<<endl;
+    cout<<"2. Descending"<<endl;
+    cin>>choice;
+
+    if(choice==1)
+    {
+        for(int i=1;i<n;i++)
+        {
+            for(int j=0;j<n-i;j++)
+            {
+                if(strcmp(M[j].retName(),M[j+1].retName())>0)
+                {
+                    temp=M[j];
+                    M[j]=M[j+1];
+                    M[j+1]=temp;
+                }
+            }
+        }
+    }
+    else
+    {
+        for(int i=1;i<n;i++)
+        {
+            for(int j=0;j<n-i;j++)
+            {
+                if(strcmp(M[j].retName(),M[j+1].retName())<0)
+                {
+                    temp=M[j];
+                    M[j]=M[j+1];
+                    M[j+1]=temp;
+                }
+            }
+        }
+    }
+
+    f.close();
+    f.open("med1.dat",ios::binary | ios::out);
+    int i=0;
+    while(i<n)
+    {
+        f.write((char*)&M[i],sizeof(Medicine));
+        ++i;
+    }
+    cout<<"\n FILE SORTED";
+    f.close();
+}
+
+void SORT_BY_CMPNAME()
+{
+    fstream f;
+    f.open("med1.dat",ios::binary | ios::in);
+    Medicine M[1000];
+
+    if(!f)
+    {
+        cout<<"FILE DOESN'T EXISTS!!!!! ";
+        return;
+    }
+
+    int n=0;
+    while(f.read((char*)&M[n],sizeof(Medicine)))
+        n++;
+
+    Medicine temp;
+    int choice;
+    cout<<"Sort"<<endl;
+    cout<<"1. Ascending"<<endl;
+    cout<<"2. Descending"<<endl;
+    cin>>choice;
+
+    if(choice==1)
+    {
+        for(int i=1;i<n;i++)
+        {
+            for(int j=0;j<n-i;j++)
+            {
+                if(strcmp(M[j].retCmpname(),M[j+1].retCmpname())>0)
+                {
+                    temp=M[j];
+                    M[j]=M[j+1];
+                    M[j+1]=temp;
+                }
+            }
+        }
+    }
+    else
+    {
+        for(int i=1;i<n;i++)
+        {
+            for(int j=0;j<n-i;j++)
+            {
+                if(strcmp(M[j].retCmpname(),M[j+1].retCmpname())<0)
+                {
+                    temp=M[j];
+                    M[j]=M[j+1];
+                    M[j+1]=temp;
+                }
+            }
+        }
+    }
+
+
+    f.close();
+    f.open("med1.dat",ios::binary | ios::out);
+    int i=0;
+    while(i<n)
+    {
+        f.write((char*)&M[i],sizeof(Medicine));
+        ++i;
+    }
+    cout<<"\n FILE SORTED";
+    f.close();
+}
+
+void SORT_BY_SMPNAME()
+{
+    fstream f;
+    f.open("med1.dat",ios::binary | ios::in);
+    Medicine M[1000];
+
+    if(!f)
+    {
+        cout<<"FILE DOESN'T EXISTS!!!!! ";
+        return;
+    }
+
+    int n=0;
+    while(f.read((char*)&M[n],sizeof(Medicine)))
+        n++;
+
+    Medicine temp;
+    int choice;
+    cout<<"Sort"<<endl;
+    cout<<"1. Ascending"<<endl;
+    cout<<"2. Descending"<<endl;
+    cin>>choice;
+
+    if(choice==1)
+    {
+        for(int i=1;i<n;i++)
+        {
+            for(int j=0;j<n-i;j++)
+            {
+                if(strcmp(M[j].retSupname(),M[j+1].retSupname())>0)
+                {
+                    temp=M[j];
+                    M[j]=M[j+1];
+                    M[j+1]=temp;
+                }
+            }
+        }
+    }
+    else
+    {
+        for(int i=1;i<n;i++)
+        {
+            for(int j=0;j<n-i;j++)
+            {
+                if(strcmp(M[j].retSupname(),M[j+1].retSupname())<0)
+                {
+                    temp=M[j];
+                    M[j]=M[j+1];
+                    M[j+1]=temp;
+                }
+            }
+        }
+    }
+
+
+    f.close();
+    f.open("med1.dat",ios::binary | ios::out);
+    int i=0;
+    while(i<n)
+    {
+        f.write((char*)&M[i],sizeof(Medicine));
+        ++i;
+    }
+    cout<<"\n FILE SORTED";
+    f.close();
+}
+
+void SORT()
+{
+    int s;
+    cout<<"\n Sort on the basis of :- ";
+    cout<<"\n 1.ID";
+    cout<<"\n 2.Name";
+    cout<<"\n 3.Company Name";
+    cout<<"\n 4.Supplier Name";
+    cin>>s;
+
+    switch(s)
+    {
+    case 1:
+        SORT_BY_ID();
+        break;
+    case 2:
+        SORT_BY_NAME();
+        break;
+    case 3:
+        SORT_BY_CMPNAME();
+        break;
+    case 4:
+        SORT_BY_SMPNAME();
+        break;
+    }
+}
+
+void ADMIN()
+{
+
 }
 
 int main()
@@ -565,7 +825,7 @@ int main()
         cout<<"\n 4.Search some Record";
         cout<<"\n 5.Modify a record";
         cout<<"\n 6.Delete a record ";
-        cout<<"\n 7.Sort On the basis of ID";
+        cout<<"\n 7.Sort all records";
         cin>>ch;
 
         switch(ch)
@@ -589,7 +849,7 @@ int main()
             DELETION();
             break;
         case 7:
-            SORT_BY_ID();
+            SORT();
             break;
 
         }
