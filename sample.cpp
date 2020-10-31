@@ -10,6 +10,19 @@
 #include<cmath>
 using namespace std;
 
+void WRITE();
+void READ();
+void COUNT_REC();
+void SEARCH();
+void DELETION();
+void MODIFY();
+void SORT();
+void DISPLAY_FOR_CUSTOMER();
+void SEARCH_NAME_FOR_CUSTOMER();
+bool LOGIN();
+void ADMIN();
+void CUSTOMER();
+
 class Medicine
 {
     int ID;
@@ -316,7 +329,7 @@ void SEARCH()
     }
 }
 
-void MODIFY()
+void MODIFY_ID()
 {
     fstream f("med1.dat", ios::in | ios::out | ios::binary);
     Medicine m;
@@ -347,6 +360,62 @@ void MODIFY()
         cout<<"\n Record Not Found!!!!";
     }
     f.close();
+}
+
+void MODIFY_NAME()
+{
+    fstream f("med1.dat", ios::in | ios::out | ios::binary);
+    Medicine m;
+
+    cin.ignore(numeric_limits<streamsize>::max(),'\n');
+    char nm[30];
+    cout<<"\n Enter name whose record is to be modified: ";
+    gets(nm);
+
+    int rec_count=0;
+    char found='N';
+    while(f.read((char*)&m,sizeof(m)))
+    {
+        if(strcmp(nm,m.retName())==0)
+        {
+            cout<<"\n Enter New Information";
+            m.indata();
+            f.seekg(rec_count*sizeof(Medicine),ios::beg);
+            f.write((char*)&m,sizeof(Medicine));
+            found='Y';
+            break;
+        }
+        rec_count++;
+    }
+    if(found=='Y')
+    {
+        cout<<"\n Medicine Details Updated";
+    }
+    else
+    {
+        cout<<"\n Record Not Found!!!!";
+    }
+    f.close();
+}
+
+void MODIFY()
+{
+    int s;
+    cout<<"\n Modify on the basis of :- ";
+    cout<<"\n 1.ID";
+    cout<<"\n 2.Name";
+    cin>>s;
+
+    switch(s)
+    {
+    case 1:
+        MODIFY_ID();
+        break;
+
+    case 2:
+        MODIFY_NAME();
+        break;
+    }
 }
 
 void DELETION1()
@@ -991,8 +1060,8 @@ int main()
             }
 
         case 2:
-            CUSTOMER();
-            break;
+                CUSTOMER();
+                break;
 
         }
         cout<<endl<<"Want to continue in Medical Store(y/n)--";
