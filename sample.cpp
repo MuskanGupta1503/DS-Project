@@ -848,7 +848,7 @@ void ADMIN()
             break;
 
         }
-        cout<<endl<<"Want to continue as ADMIN(y/n)--";
+        cout<<endl<<"\n Want to continue as ADMIN(y/n)--";
         cin>>ch1;
     }while(ch1=='y' || ch1=='Y');
 
@@ -857,6 +857,24 @@ void ADMIN()
 void CUSTOMER()
 {
     cout<<"Hello"<<endl;
+}
+
+bool LOGIN()
+{
+    char username[30];
+    char password[30];
+    cin.ignore(numeric_limits<streamsize>::max(),'\n');
+    cout<<"\n Enter Username  ";
+    gets(username);
+    cout<<"\n Enter Password  ";
+    gets(password);
+
+    if((strcmp(username,"admin")==0) && (strcmp(password,"Hello")==0))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 int main()
@@ -868,14 +886,25 @@ int main()
         cout<<"\n WELCOME TO MEDICAL STORE";
         cout<<"\n ENTER AS";
         cout<<"\n 1.ADMIN";
-        cout<<"\n 2.CUSTOMER";
+        cout<<"\n 2.CUSTOMER \n";
         cin>>ch;
 
         switch(ch)
         {
         case 1:
-            ADMIN();
-            break;
+            {
+                bool b=LOGIN();
+                if(b)
+                {
+                    ADMIN();
+                }
+                else
+                {
+                    cout<<"\n Wrong Username or Password \n";
+                }
+                break;
+            }
+
         case 2:
             CUSTOMER();
             break;
