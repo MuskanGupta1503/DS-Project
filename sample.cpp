@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include<iostream>
 #include<fstream>
 #include<stdio.h>
 #include<conio.h>
@@ -6,6 +7,7 @@
 #include<string.h>
 #include<ctype.h>
 #include<math.h>
+#include<cmath>
 using namespace std;
 
 class Medicine
@@ -87,8 +89,8 @@ void Medicine::outdata()
 void Medicine::OutDataForCustomer()
 {
         cout<<"Name: "<<name;
+        cout<<endl<<"  Company name: "<<cmpname;
         cout<<endl<<"  Sale Cost: "<<saleCost;
-        cout<<endl<<"  Quantity: "<<qty;
         cout<<endl;
 }
 
@@ -881,7 +883,7 @@ bool LOGIN()
     return false;
 }
 
-void DISPLAY()
+void DISPLAY_FOR_CUSTOMER()
 {
     ifstream f("med1.dat",ios::binary | ios::in);
     Medicine m;
@@ -901,6 +903,37 @@ void DISPLAY()
     f.close();
 }
 
+void SEARCH_NAME_FOR_CUSTOMER()
+{
+    ifstream f("med1.dat",ios::in | ios::binary);
+    char found='N';
+     Medicine m;
+    if(!f)
+    {
+        cout<<endl<<"FILE DOESN'T EXIST!!!!!";
+        return;
+    }
+    char nm[30];
+     cin.ignore(numeric_limits<streamsize>::max(),'\n');
+    cout<<"Enter name whose record is to be searched: ";
+    gets(nm);
+    while(f.read((char*)&m,sizeof(m)))
+    {
+        if(strcmp(m.retName(),nm)==0)
+        {
+            cout<<"INFORMATION OF THE MEDICINE : \n";
+            cout<<"  ";
+            m.OutDataForCustomer();
+            found='Y';
+            break;
+        }
+    }
+    if(found=='N')
+    {
+        cout<<"NO SUCH RECORD FOUND"<<endl;
+    }
+    f.close();
+}
 
 void CUSTOMER()
 {
@@ -911,13 +944,17 @@ void CUSTOMER()
     do{
         cout<<"\n WELCOME TO MEDICAL STORE";
         cout<<"\n 1.Explore All Available Medicines";
-        cout<<"\n 2.CUSTOMER \n";
+        cout<<"\n 2.Search some Medicine name";
         cin>>ch;
 
         switch(ch)
         {
         case 1:
-            DISPLAY();
+            DISPLAY_FOR_CUSTOMER();
+            break;
+
+        case 2:
+            SEARCH_NAME_FOR_CUSTOMER();
             break;
         }
         cout<<endl<<"Want to continue as Customer(y/n)--";
