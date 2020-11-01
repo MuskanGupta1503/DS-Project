@@ -14,9 +14,11 @@ using namespace std;
 
 void WRITE();
 void READ();
+void SEARCH_ID();
 void COUNT_REC();
 void SEARCH();
 void DELETION();
+void MODIFY_ID();
 void MODIFY();
 void SORT();
 void DISPLAY_FOR_CUSTOMER();
@@ -607,17 +609,25 @@ void DELETION()
     switch(s)
     {
     case 1:
-        DELETION1();
-        break;
+        {
+            DELETION1();
+            break;
+        }
     case 2:
-        DELETION2();
-        break;
+        {
+            DELETION2();
+            break;
+        }
     case 3:
-        DELETION3();
-        break;
+        {
+            DELETION3();
+            break;
+        }
     case 4:
-        DELETION4();
-        break;
+        {
+            DELETION4();
+            break;
+        }
     }
 }
 
@@ -913,18 +923,25 @@ void SORT()
     switch(s)
     {
     case 1:
-        SORT_BY_ID();
-        break;
+        {
+            SORT_BY_ID();
+            break;
+        }
     case 2:
-        SORT_BY_NAME();
-        break;
+        {
+            SORT_BY_NAME();
+            break;
+        }
     case 3:
-        SORT_BY_CMPNAME();
-        break;
+        {
+            SORT_BY_CMPNAME();
+            break;
+        }
     case 4:
-        SORT_BY_SMPNAME();
-        break;
-
+        {
+            SORT_BY_SMPNAME();
+            break;
+        }
     }
 }
 
@@ -1165,11 +1182,14 @@ int main()
                     break;
                 }
             case 2:
+                {
                     CUSTOMER();
                     break;
+                }
             case 3:
+                {
                     break;
-
+                }
         }
         cout<<endl<<"Want to continue in Medical Store(y/n)--";
         cin>>ch1;
