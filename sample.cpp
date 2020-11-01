@@ -8,6 +8,8 @@
 #include<ctype.h>
 #include<math.h>
 #include<cmath>
+#include<stdlib.h>
+#include<process.h>
 using namespace std;
 
 void WRITE();
@@ -22,6 +24,7 @@ void SEARCH_NAME_FOR_CUSTOMER();
 bool LOGIN();
 void ADMIN();
 void CUSTOMER();
+void PURCHASE_FOR_CUSTOMER();
 
 class Medicine
 {
@@ -59,11 +62,14 @@ public:
     void indata();
     void outdata();
     void OutDataForCustomer();
+    void generate_bill(int quantity);
+    bool purchase(int quantity);
+
+    //getter functions
     int retID();
     char*retName();
     char*retCmpname();
     char*retSupname();
-
 };
 
 void Medicine::indata()
@@ -110,6 +116,28 @@ void Medicine::OutDataForCustomer()
 int Medicine::retID()
 {
     return(ID);
+}
+
+void Medicine::generate_bill(int quantity)
+{
+    cout<<"\n Your Bill ";
+    cout<<"\n Name of the medicine: "<<name;
+    cout<<"\n Quantity: "<<quantity;
+
+    float cost;
+    cost=quantity*saleCost;
+    cout<<"\n Cost: "<<cost;
+}
+
+bool Medicine::purchase(int quantity)
+{
+    if(quantity>qty)
+    {
+        return false;
+    }
+
+    qty=qty-quantity;
+    return true;
 }
 
 char*Medicine::retCmpname()
@@ -607,7 +635,9 @@ void SORT_BY_ID()
 
     int n=0;
     while(f.read((char*)&M[n],sizeof(Medicine)))
-        n++;
+     {
+         n++;
+     }
 
     Medicine temp;
     int choice;
@@ -674,7 +704,9 @@ void SORT_BY_NAME()
 
     int n=0;
     while(f.read((char*)&M[n],sizeof(Medicine)))
-        n++;
+     {
+         n++;
+     }
 
     Medicine temp;
     int choice;
@@ -740,7 +772,9 @@ void SORT_BY_CMPNAME()
 
     int n=0;
     while(f.read((char*)&M[n],sizeof(Medicine)))
-        n++;
+     {
+         n++;
+     }
 
     Medicine temp;
     int choice;
@@ -764,6 +798,7 @@ void SORT_BY_CMPNAME()
             }
         }
     }
+
     else
     {
         for(int i=1;i<n;i++)
@@ -780,8 +815,8 @@ void SORT_BY_CMPNAME()
         }
     }
 
-
     f.close();
+
     f.open("med1.dat",ios::binary | ios::out);
     int i=0;
     while(i<n)
@@ -790,6 +825,7 @@ void SORT_BY_CMPNAME()
         ++i;
     }
     cout<<"\n FILE SORTED";
+
     f.close();
 }
 
@@ -807,7 +843,9 @@ void SORT_BY_SMPNAME()
 
     int n=0;
     while(f.read((char*)&M[n],sizeof(Medicine)))
-        n++;
+     {
+         n++;
+     }
 
     Medicine temp;
     int choice;
@@ -831,6 +869,7 @@ void SORT_BY_SMPNAME()
             }
         }
     }
+
     else
     {
         for(int i=1;i<n;i++)
@@ -847,15 +886,16 @@ void SORT_BY_SMPNAME()
         }
     }
 
-
     f.close();
     f.open("med1.dat",ios::binary | ios::out);
+
     int i=0;
     while(i<n)
     {
         f.write((char*)&M[i],sizeof(Medicine));
         ++i;
     }
+
     cout<<"\n FILE SORTED";
     f.close();
 }
@@ -884,6 +924,7 @@ void SORT()
     case 4:
         SORT_BY_SMPNAME();
         break;
+
     }
 }
 
@@ -901,6 +942,7 @@ void ADMIN()
         cout<<"\n 5.Modify a record";
         cout<<"\n 6.Delete a record ";
         cout<<"\n 7.Sort all records";
+        cout<<"\n 8.Exit";
         cin>>ch;
 
         switch(ch)
@@ -926,10 +968,13 @@ void ADMIN()
         case 7:
             SORT();
             break;
+        case 8:
+            break;
 
         }
         cout<<endl<<"\n Want to continue as ADMIN(y/n)--";
         cin>>ch1;
+
     }while(ch1=='y' || ch1=='Y');
 
 }
@@ -939,6 +984,7 @@ bool LOGIN()
     char username[30];
     char password[30];
     cin.ignore(numeric_limits<streamsize>::max(),'\n');
+
     cout<<"\n Enter Username  ";
     gets(username);
     cout<<"\n Enter Password  ";
@@ -1004,6 +1050,60 @@ void SEARCH_NAME_FOR_CUSTOMER()
     f.close();
 }
 
+void PURCHASE_FOR_CUSTOMER()
+{
+    fstream f("med1.dat", ios::in | ios::out | ios::binary);
+    Medicine m;
+
+    cin.ignore(numeric_limits<streamsize>::max(),'\n');
+    char nm[30];
+    int quantity;
+
+    cout<<"\n Enter Medicine name you want to buy ";
+    gets(nm);
+
+    int rec_count=0;
+    bool b;
+    char found='N';
+
+    while(f.read((char*)&m,sizeof(m)))
+    {
+        if(strcmp(nm,m.retName())==0)
+        {
+            cout<<"\n Enter quantity";
+            cin>>quantity;
+
+            b=m.purchase(quantity);
+            if(!b)
+            {
+                cout<<"SORRY! your required quantity was not present in our stock \n";
+                cout<<"Please enter a valid quantity \n";
+            }
+
+            //Place content
+            f.seekg(rec_count*sizeof(Medicine),ios::beg);
+            f.write((char*)&m,sizeof(Medicine));
+            found='Y';
+            break;
+        }
+        rec_count++;
+    }
+
+    if(!b && found=='Y')
+    {
+    }
+    else if(found=='Y')
+    {
+        m.generate_bill(quantity);
+        cout<<"\n Your Purchase was successfull";
+    }
+    else
+    {
+        cout<<"\n Please Enter a valid Medicine Name";
+    }
+    f.close();
+}
+
 void CUSTOMER()
 {
     //cout<<"Hello"<<endl;
@@ -1014,6 +1114,8 @@ void CUSTOMER()
         cout<<"\n WELCOME TO MEDICAL STORE";
         cout<<"\n 1.Explore All Available Medicines";
         cout<<"\n 2.Search some Medicine name";
+        cout<<"\n 3.Purchase some Medicine";
+        cout<<"\n 4.Exit";
         cin>>ch;
 
         switch(ch)
@@ -1021,11 +1123,16 @@ void CUSTOMER()
         case 1:
             DISPLAY_FOR_CUSTOMER();
             break;
-
         case 2:
             SEARCH_NAME_FOR_CUSTOMER();
             break;
+        case 3:
+            PURCHASE_FOR_CUSTOMER();
+            break;
+        case 4:
+            break;
         }
+
         cout<<endl<<"Want to continue as Customer(y/n)--";
         cin>>ch1;
     }while(ch1=='y' || ch1=='Y');
@@ -1035,37 +1142,38 @@ int main()
 {
     char ch1;
     int ch;
-
     do{
         cout<<"\n WELCOME TO MEDICAL STORE";
         cout<<"\n ENTER AS";
         cout<<"\n 1.ADMIN";
-        cout<<"\n 2.CUSTOMER \n";
+        cout<<"\n 2.CUSTOMER";
+        cout<<"\n 3.Exit \n";
         cin>>ch;
-
         switch(ch)
         {
-        case 1:
-            {
-                bool b=LOGIN();
-                if(b)
+            case 1:
                 {
-                    ADMIN();
+                    bool b=LOGIN();
+                    if(b)
+                    {
+                        ADMIN();
+                    }
+                    else
+                    {
+                        cout<<"\n Wrong Username or Password \n";
+                    }
+                    break;
                 }
-                else
-                {
-                    cout<<"\n Wrong Username or Password \n";
-                }
-                break;
-            }
-
-        case 2:
-                CUSTOMER();
-                break;
+            case 2:
+                    CUSTOMER();
+                    break;
+            case 3:
+                    break;
 
         }
         cout<<endl<<"Want to continue in Medical Store(y/n)--";
         cin>>ch1;
+
     }while(ch1=='y' || ch1=='Y');
     return 0;
 }
